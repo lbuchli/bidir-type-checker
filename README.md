@@ -2,7 +2,6 @@
 
 This is an exercise to implement bidirectional type checking.
 
-
 Example tasks:
 - Add ternary if
 - Add arrays (medium)
@@ -10,3 +9,5 @@ Example tasks:
 - Add lambdas (hard!)
 - Add user defined types (even harder!)
 - Add type polymorphism (you have too much time)
+
+The presentation (under `presentation/`) is under [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
