@@ -20,8 +20,13 @@ common warnings
 
 library
   import:           warnings
-  exposed-modules:  MyLib
-  other-modules:    Result
+  exposed-modules:
+    AST
+    Interpreter
+    Result
+    TypeChecker
+
+  -- other-modules:
 
   -- other-extensions:
   build-depends:

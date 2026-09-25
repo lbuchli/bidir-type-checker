@@ -1,6 +1,7 @@
 module Main (main) where
 
-import MyLib
+import AST
+import Interpreter
 
 main :: IO ()
 main = run test1
