@@ -43,6 +43,7 @@ eval env expr = case expr of
         argVal = eval env argExpr
         extendedEnv = Map.insert param argVal closureEnv
      in eval extendedEnv body
+  Ann expr _ -> eval env expr
 
 execStmt :: Env -> Stmt -> IO Env
 execStmt env stmt = case stmt of
