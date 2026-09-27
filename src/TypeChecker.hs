@@ -29,15 +29,30 @@ infer env = \case
   (Equal x y) -> do
     tx <- infer env x
     check env y tx
-    return TBool
+    case tx of
+      TBool -> return TBool
+      TNum -> return TBool
+      _ -> Err $ "Cannot compare values of type " ++ show tx
   (Var v) -> case Map.lookup v env of
     Just t -> return t
     Nothing -> Err $ "Variable not in scope: " ++ v
+  (App f x) -> do
+    tf <- infer env f
+    case tf of
+      (TFn a b) -> do
+        check env x a
+        return b
+      _ -> Err $ "Cannot apply " ++ show x ++ " to non-function type " ++ show tf
+  (Ann x t) -> do
+    check env x t
+    return t
+  x -> Err $ "Cannot infer type of " ++ show x ++ ". Add explicit type annotations."
 
 -- here are rules with check (<=) in their conclusion
 check :: TyEnv -> Expr -> Type -> Result String ()
 check env = \cases
-  -- there might be extra cases here, e.g. when implementing lambda
+  (Lambda v x) (TFn ta tb) -> do
+    check (Map.insert v ta env) x tb
   x t -> do
     t' <- infer env x
     if t == t'

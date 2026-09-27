@@ -9,11 +9,11 @@ import AST
 import Result
 import TypeChecker
 
--- Runtime values stored in the environment
 data Value
   = VNum Int
   | VBool Bool
-  deriving (Eq, Show)
+  | VClosure Name Expr Env
+  deriving (Show)
 
 type Env = Map Name Value
 
@@ -33,7 +33,16 @@ eval env expr = case expr of
   Equal e1 e2 ->
     let v1 = eval env e1
         v2 = eval env e2
-     in VBool (v1 == v2)
+     in case (v1, v2) of
+          (VNum x, VNum y) -> VBool (x == y)
+          (VBool x, VBool y) -> VBool (x == y)
+  Lambda param body ->
+    VClosure param body env
+  App fnExpr argExpr ->
+    let VClosure param body closureEnv = eval env fnExpr
+        argVal = eval env argExpr
+        extendedEnv = Map.insert param argVal closureEnv
+     in eval extendedEnv body
 
 execStmt :: Env -> Stmt -> IO Env
 execStmt env stmt = case stmt of

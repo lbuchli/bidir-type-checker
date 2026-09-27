@@ -5,6 +5,7 @@ type Name = String
 data Type
   = TNum
   | TBool
+  | TFn Type Type
   deriving (Eq, Show)
 
 data Expr
@@ -14,6 +15,9 @@ data Expr
   | LessThan Expr Expr
   | Equal Expr Expr
   | Var Name
+  | Lambda Name Expr
+  | App Expr Expr
+  | Ann Expr Type
   deriving (Show)
 
 data Stmt
