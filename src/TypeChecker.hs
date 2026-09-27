@@ -13,6 +13,7 @@ import Result
 
 type TyEnv = Map Name Type
 
+-- here are rules with infer (=>) in their conclusion
 infer :: TyEnv -> Expr -> Result String Type
 infer env = \case
   (Add x y) -> do
@@ -33,13 +34,14 @@ infer env = \case
     Just t -> return t
     Nothing -> Err $ "Variable not in scope: " ++ v
 
+-- here are rules with check (<=) in their conclusion
 check :: TyEnv -> Expr -> Type -> Result String ()
 check env = \cases
   -- there might be extra cases here, e.g. when implementing lambda
   x t -> do
     t' <- infer env x
     if t == t'
-      then return ()
+      then return () -- mode switch
       else
         Err $
           "Couldn't match expected type "
@@ -49,6 +51,7 @@ check env = \cases
             ++ " in expression "
             ++ show x
 
+-- you can safely ignore this unless you are adding or modifying a statement
 checkProgram :: Program -> Result String ()
 checkProgram p = do
   _ <- check_stmt Map.empty p
