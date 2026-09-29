@@ -14,6 +14,7 @@ data Expr
   | LessThan Expr Expr
   | Equal Expr Expr
   | Var Name
+  | Ternary Expr Expr Expr
   deriving (Show)
 
 data Stmt

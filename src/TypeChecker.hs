@@ -33,6 +33,12 @@ infer env = \case
   (Var v) -> case Map.lookup v env of
     Just t -> return t
     Nothing -> Err $ "Variable not in scope: " ++ v
+  (Ternary c x y) -> do
+    check env c TBool
+    tx <- infer env x
+    check env y tx
+    return tx
+
 
 -- here are rules with check (<=) in their conclusion
 check :: TyEnv -> Expr -> Type -> Result String ()

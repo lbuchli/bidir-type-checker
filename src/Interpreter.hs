@@ -34,6 +34,11 @@ eval env expr = case expr of
     let v1 = eval env e1
         v2 = eval env e2
      in VBool (v1 == v2)
+  Ternary c x y -> 
+    case eval env c of
+      VBool True -> eval env x
+      VBool False -> eval env y
+      _ -> error "Type invariant broken"
 
 execStmt :: Env -> Stmt -> IO Env
 execStmt env stmt = case stmt of

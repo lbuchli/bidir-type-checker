@@ -4,7 +4,7 @@ import AST
 import Interpreter
 
 main :: IO ()
-main = run test1
+main = run test2
 
 test1 :: Program
 test1 =
@@ -16,3 +16,7 @@ test1 =
           , Print (Var "x")
           ]
     ]
+
+test2 :: Program
+test2 = 
+  Print (Ternary (Boolean True) (Num 42) (Num 23))
